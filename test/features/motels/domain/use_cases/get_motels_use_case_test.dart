@@ -6,21 +6,25 @@ import 'package:http/http.dart' as http;
 
 void main() {
   late GetMotelsUseCase useCase;
-  final String url = "https://www.jsonkeeper.com/b/1IXK";
+  final String url = "https://www.jsonkeeper.com/b/1IXK"; // URL real da API
 
   setUp(() {
+    // Configura o caso de uso com um cliente HTTP real e o repositório
     final apiClient = HttpApiClient(client: http.Client());
     final repository = MotelRepository(apiClient: apiClient);
     useCase = GetMotelsUseCase(repository);
   });
 
-  test('should return a list of motels from real API', () async {
+  test('Deve retornar uma lista de motéis ao chamar a API', () async {
+    // Chama o caso de uso
     final motels = await useCase.execute();
 
+    // Verifica se o retorno é uma lista de motéis
     expect(motels, isA<List>());
     expect(motels.isNotEmpty, true);
 
-    final motel = motels[0];
+    // Testa se o primeiro motel contém os atributos essenciais
+    final motel = motels.first;
     expect(motel.name, isNotEmpty);
     expect(motel.suites, isA<List>());
   });

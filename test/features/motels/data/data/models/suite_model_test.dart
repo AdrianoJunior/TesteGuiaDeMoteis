@@ -12,13 +12,13 @@ void main() {
     "periodos": [{"tempoFormatado": "3 horas", "valorTotal": 129.0}]
   };
 
-  test('should correctly map real JSON to SuiteModel', () {
+  test('Deve mapear JSON corretamente para SuiteModel', () {
     final suite = SuiteModel.fromJson(json);
 
-    expect(suite.name, "Suíte Marselha Sexy");
-    expect(suite.photos.length, greaterThan(0));
-    expect(suite.features.first, "TV a cabo");
-    expect(suite.pricing.first.formattedTime, "3 horas");
-    expect(suite.pricing.first.totalValue, 129.0);
+    expect(suite.name, "Suíte Marselha Sexy"); // Nome da suíte
+    expect(suite.photos.length, greaterThan(0)); // Deve conter pelo menos uma foto
+    expect(suite.features.first, "TV a cabo"); // Primeiro item da suíte
+    expect(suite.pricing.first.formattedTime, "3 horas"); // Tempo formatado correto
+    expect(suite.pricing.first.totalValue, 129.0); // Valor total correto
   });
 }

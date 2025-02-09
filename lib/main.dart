@@ -9,18 +9,25 @@ import 'features/motels/presentation/pages/motel_list_page.dart';
 import 'core/network/http_api_client.dart';
 
 void main() {
-  final apiClient = HttpApiClient(client: http.Client()); // Inject HTTP Client
+  // Inicializa o cliente HTTP para realizar requisições à API
+  final apiClient = HttpApiClient(client: http.Client());
+
+  // Cria o repositório responsável por intermediar a comunicação com a API
   final motelRepository = MotelRepository(apiClient: apiClient);
+
+  // Define o caso de uso que obtém a lista de motéis do repositório
   final getMotelsUseCase = GetMotelsUseCase(motelRepository);
 
+  // Inicializa o aplicativo com um BlocProvider para gerenciar o estado global do MotelBloc
   runApp(
     BlocProvider(
-      create: (_) => MotelBloc(getMotelsUseCase)..add(FetchMotels()),
+      create: (_) => MotelBloc(getMotelsUseCase: getMotelsUseCase)..add(FetchMotels()), // Dispara o evento para carregar motéis ao iniciar
       child: MyApp(),
     ),
   );
 }
 
+/// Classe principal do aplicativo, configurando o tema e a navegação inicial.
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -41,7 +48,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         cardTheme: CardTheme(
-          color: const Color(0xe6ffffff), // Default card color
+          color: const Color(0xe6ffffff),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -51,4 +58,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

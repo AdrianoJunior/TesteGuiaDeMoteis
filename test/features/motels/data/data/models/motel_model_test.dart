@@ -10,13 +10,12 @@ void main() {
     "suites": []
   };
 
-  test('should correctly map real JSON to MotelModel', () {
+  test('Deve mapear JSON corretamente para um MotelModel', () {
     final motel = MotelModel.fromJson(json);
 
-    expect(motel.name, "Motel Le Nid");
-    expect(motel.logo, "https://cdn.guiademoteis.com.br/imagens/logotipos/3148-le-nid.gif");
-    expect(motel.neighborhood, "Chácara Flora - São Paulo");
-    expect(motel.distancia, 28.27);
-
+    expect(motel.name, "Motel Le Nid"); // Nome do motel
+    expect(motel.logo, "https://cdn.guiademoteis.com.br/imagens/logotipos/3148-le-nid.gif"); // Logo do motel
+    expect(motel.neighborhood, "Chácara Flora - São Paulo"); // Bairro do motel
+    expect(motel.distancia, 28.27); // Distância fornecida pela API
   });
 }

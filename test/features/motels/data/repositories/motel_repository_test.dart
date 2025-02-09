@@ -5,32 +5,26 @@ import 'package:guia_moteis/features/motels/data/repositories/motel_repository.d
 import 'package:http/http.dart' as http;
 
 void main() {
-  late MotelRepositoryProtocol repository;
-  final String url = "https://www.jsonkeeper.com/b/1IXK";
+  late MotelRepositoryProtocol repository; // Define a interface do repositório
+  final String url = "https://www.jsonkeeper.com/b/1IXK"; // URL real da API
 
   setUp(() {
+    // Configura o repositório com um cliente HTTP real
     final apiClient = HttpApiClient(client: http.Client());
     repository = MotelRepository(apiClient: apiClient);
   });
 
-  test('should fetch and return a list of MotelEntity from API', () async {
+  test('Deve buscar e retornar uma lista de MotelEntity da API', () async {
+    // Executa a chamada ao repositório
     final motels = await repository.fetchMotels();
 
+    // Verifica se o resultado é uma lista de motéis
     expect(motels, isA<List>());
     expect(motels.isNotEmpty, true);
 
-    final motel = motels[0];
+    // Testa se o primeiro motel contém os atributos essenciais
+    final motel = motels.first;
     expect(motel.name, isNotEmpty);
     expect(motel.suites, isA<List>());
-  });
-
-  test('should return empty list if API returns empty data', () async {
-    final emptyRepository = MotelRepository(
-      apiClient: HttpApiClient(
-        client: http.Client(),
-      ),
-    );
-
-    expect(await emptyRepository.fetchMotels(), isA<List>());
   });
 }

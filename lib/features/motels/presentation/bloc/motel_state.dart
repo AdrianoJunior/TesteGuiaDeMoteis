@@ -6,6 +6,9 @@ abstract class MotelState extends Equatable {
   List<Object?> get props => [];
 }
 
+// 🔹 NEW initial state for consistency in tests
+class MotelInitial extends MotelState {}
+
 class MotelLoading extends MotelState {}
 
 class MotelLoaded extends MotelState {

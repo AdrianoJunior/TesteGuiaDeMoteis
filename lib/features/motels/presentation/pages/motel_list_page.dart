@@ -6,23 +6,24 @@ import 'package:guia_moteis/features/motels/presentation/widgets/filter_buttons.
 import 'package:guia_moteis/features/motels/presentation/widgets/motel_view.dart';
 import 'package:guia_moteis/features/motels/presentation/widgets/location_selector.dart';
 
+/// Página responsável por exibir a lista de motéis com filtros e carregamento dinâmico usando BLoC.
 class MotelListPage extends StatelessWidget {
+  const MotelListPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.redAccent, // Background behind the main content
+      backgroundColor: Colors.redAccent,
       appBar: _buildAppBar(),
       body: Stack(
         children: [
-          // White Rounded Body Background
+          // Fundo branco com bordas arredondadas na parte superior
           Positioned.fill(
-            top: 80, // Adjusts the start position below the LocationSelector
+            top: 80, // Posicionamento abaixo do seletor de localização
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20), // Rounded top effect
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
             ),
           ),
@@ -30,10 +31,12 @@ class MotelListPage extends StatelessWidget {
           Column(
             children: [
               const LocationSelector(),
+              // Componente para seleção de localização (mock)
               Expanded(
                 child: Column(
                   children: [
-                    FilterButtons(),
+                    const SizedBox(height: 24),
+                    FilterButtons(), // Botões de filtro da listagem (não implementado, apenas mock)
                     Expanded(
                       child: BlocBuilder<MotelBloc, MotelState>(
                         builder: (context, state) {
@@ -43,18 +46,18 @@ class MotelListPage extends StatelessWidget {
                           } else if (state is MotelLoaded) {
                             return ListView.builder(
                               padding: const EdgeInsets.only(bottom: 80),
-                              // Leaves space for floating button
+                              // Espaço para o botão do Mapa
                               itemCount: state.motels.length,
                               itemBuilder: (context, index) {
+                                // Exibe cada motel
                                 return MotelView(motel: state.motels[index]);
                               },
                             );
                           } else if (state is MotelError) {
                             return Center(child: Text(state.message));
-                          } else {
-                            return const Center(
-                                child: Text('Nenhum dado encontrado'));
                           }
+                          return const Center(
+                              child: Text('Nenhum dado encontrado'));
                         },
                       ),
                     ),
@@ -64,7 +67,7 @@ class MotelListPage extends StatelessWidget {
             ],
           ),
 
-          // Floating "Mapa" Button
+          // Botão flutuante "Mapa"
           Positioned(
             bottom: 16,
             left: 0,
@@ -74,32 +77,31 @@ class MotelListPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.transparent, width: 1.5),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
+                        color: Colors.black26,
+                        blurRadius: 4,
+                        offset: const Offset(0, 2)),
                   ],
                 ),
                 padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    // Ação ao clicar no botão (ainda não implementada)
+                  },
                   borderRadius: BorderRadius.circular(30),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.map, size: 20, color: Colors.red),
-                      const SizedBox(width: 8),
-                      const Text(
+                    children: const [
+                      Icon(Icons.map, size: 20, color: Colors.red),
+                      SizedBox(width: 8),
+                      Text(
                         'Mapa',
                         style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.red,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -112,6 +114,7 @@ class MotelListPage extends StatelessWidget {
     );
   }
 
+  /// Constrói a AppBar com botões para selecionar o dia da visita ao motel.
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.red,
@@ -143,10 +146,7 @@ class MotelListPage extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        shape: RoundedRectangleBorder(
-          side: BorderSide.none,
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
     );
   }
