@@ -5,7 +5,7 @@ import 'package:guia_moteis/features/motels/domain/use_cases/get_motels_use_case
 import 'package:http/http.dart' as http;
 import 'features/motels/presentation/bloc/motel_bloc.dart';
 import 'features/motels/presentation/bloc/motel_event.dart';
-import 'features/motels/presentation/motel_list_page.dart';
+import 'features/motels/presentation/pages/motel_list_page.dart';
 import 'core/network/http_api_client.dart';
 
 void main() {
