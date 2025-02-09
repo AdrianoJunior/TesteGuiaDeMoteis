@@ -1,11 +1,6 @@
 # 🏨 **Guia Moteis**
 _Um guia completo de motéis, suítes e preços na sua região._
 
-![GitHub last commit](https://img.shields.io/github/last-commit/AdrianoJunior/GuiaMoteis)  
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/AdrianoJunior/GuiaMoteis/flutter-test-coverage.yml?label=CI%2FCD)  
-![Codecov](https://img.shields.io/codecov/c/github/AdrianoJunior/GuiaMoteis)  
-![License](https://img.shields.io/github/license/AdrianoJunior/GuiaMoteis)
-
 ---
 
 ## 📌 **Sobre o Projeto**
