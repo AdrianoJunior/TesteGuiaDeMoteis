@@ -1,73 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:guia_moteis/features/motels/presentation/bloc/filter/filter_bloc.dart';
+import 'package:guia_moteis/features/motels/presentation/bloc/filter/filter_state.dart';
 import 'package:guia_moteis/features/motels/presentation/bloc/motel_bloc.dart';
+import 'package:guia_moteis/features/motels/presentation/bloc/motel_event.dart';
 import 'package:guia_moteis/features/motels/presentation/bloc/motel_state.dart';
 import 'package:guia_moteis/features/motels/presentation/widgets/filter_buttons.dart';
+import 'package:guia_moteis/features/motels/presentation/widgets/filter_panel.dart';
 import 'package:guia_moteis/features/motels/presentation/widgets/motel_view.dart';
 import 'package:guia_moteis/features/motels/presentation/widgets/location_selector.dart';
 
-/// Página responsável por exibir a lista de motéis com filtros e carregamento dinâmico usando BLoC.
 class MotelListPage extends StatelessWidget {
   const MotelListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Colors.red, // Keeps the red background
       appBar: _buildAppBar(),
       body: Stack(
         children: [
-          // Fundo branco com bordas arredondadas na parte superior
+          // White background with a rounded top effect
           Positioned.fill(
-            top: 80, // Posicionamento abaixo do seletor de localização
+            top: 80, // Adjust to ensure it starts below the app bar
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)), // Rounded top effect
               ),
             ),
           ),
 
+          // Column that contains the main content
           Column(
             children: [
               const LocationSelector(),
-              // Componente para seleção de localização (mock)
-              Expanded(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 24),
-                    FilterButtons(), // Botões de filtro da listagem (não implementado, apenas mock)
-                    Expanded(
-                      child: BlocBuilder<MotelBloc, MotelState>(
-                        builder: (context, state) {
-                          if (state is MotelLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (state is MotelLoaded) {
-                            return ListView.builder(
-                              padding: const EdgeInsets.only(bottom: 80),
-                              // Espaço para o botão do Mapa
-                              itemCount: state.motels.length,
-                              itemBuilder: (context, index) {
-                                // Exibe cada motel
-                                return MotelView(motel: state.motels[index]);
-                              },
-                            );
-                          } else if (state is MotelError) {
-                            return Center(child: Text(state.message));
-                          }
-                          return const Center(
-                              child: Text('Nenhum dado encontrado'));
-                        },
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 12),
+              FilterButtons(),
+
+              // BlocListener to update the list when filters change
+              BlocListener<FilterBloc, FilterState>(
+                listener: (context, state) {
+                  context.read<MotelBloc>().add(FetchMotels());
+                },
+                child: Expanded(
+                  child: BlocBuilder<MotelBloc, MotelState>(
+                    builder: (context, state) {
+                      if (state is MotelLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (state is MotelLoaded) {
+                        return ListView.builder(
+                          padding: const EdgeInsets.only(bottom: 80),
+                          itemCount: state.motels.length,
+                          itemBuilder: (context, index) {
+                            return MotelView(motel: state.motels[index]);
+                          },
+                        );
+                      } else if (state is MotelError) {
+                        return Center(child: Text(state.message));
+                      }
+                      return const Center(child: Text('Nenhum dado encontrado'));
+                    },
+                  ),
                 ),
               ),
             ],
           ),
 
-          // Botão flutuante "Mapa"
+          // Floating "Mapa" button
           Positioned(
             bottom: 16,
             left: 0,
@@ -79,13 +79,13 @@ class MotelListPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 4,
-                        offset: const Offset(0, 2)),
+                      color: Colors.black26,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
                   ],
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: InkWell(
                   onTap: () {
                     // Ação ao clicar no botão (ainda não implementada)
@@ -99,9 +99,10 @@ class MotelListPage extends StatelessWidget {
                       Text(
                         'Mapa',
                         style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
+                          color: Colors.red,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -109,12 +110,18 @@ class MotelListPage extends StatelessWidget {
               ),
             ),
           ),
+
+          // Filter panel
+          BlocBuilder<FilterBloc, FilterState>(
+            builder: (context, state) {
+              return FilterPanel();
+            },
+          ),
         ],
       ),
     );
   }
 
-  /// Constrói a AppBar com botões para selecionar o dia da visita ao motel.
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.red,
@@ -134,8 +141,7 @@ class MotelListPage extends StatelessWidget {
     );
   }
 
-  Widget _buildRoundedButton(IconData icon, String text,
-      {bool isActive = false}) {
+  Widget _buildRoundedButton(IconData icon, String text, {bool isActive = false}) {
     return ElevatedButton.icon(
       onPressed: () {},
       icon: Icon(icon, size: 18, color: isActive ? Colors.red : Colors.grey),

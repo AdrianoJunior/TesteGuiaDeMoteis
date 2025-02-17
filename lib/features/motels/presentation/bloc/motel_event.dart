@@ -6,3 +6,5 @@ abstract class MotelEvent extends Equatable {
 }
 
 class FetchMotels extends MotelEvent {}
+
+class FetchFilteredMotels extends MotelEvent {} // 🔹 New event

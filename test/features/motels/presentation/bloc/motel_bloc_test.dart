@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:guia_moteis/core/network/http_api_client.dart';
 import 'package:guia_moteis/features/motels/data/repositories/motel_repository.dart';
 import 'package:guia_moteis/features/motels/domain/use_cases/get_motels_use_case.dart';
+import 'package:guia_moteis/features/motels/presentation/bloc/filter/filter_bloc.dart';
 import 'package:guia_moteis/features/motels/presentation/bloc/motel_bloc.dart';
 import 'package:guia_moteis/features/motels/presentation/bloc/motel_event.dart';
 import 'package:guia_moteis/features/motels/presentation/bloc/motel_state.dart';
@@ -22,19 +23,21 @@ void main() {
   late MotelRepository mockRepository;
   late GetMotelsUseCase realUseCase;
   late GetMotelsUseCase mockUseCase;
+  late FilterBloc filterBloc;
 
   setUp(() {
     // Configuração para o teste usando a API
     final realApiClient = HttpApiClient(client: http.Client());
+    filterBloc = FilterBloc();
     realRepository = MotelRepository(apiClient: realApiClient);
     realUseCase = GetMotelsUseCase(realRepository);
-    realBloc = MotelBloc(getMotelsUseCase: realUseCase);
+    realBloc = MotelBloc(getMotelsUseCase: realUseCase, filterBloc: filterBloc);
 
     // Configuração para o teste de falha simulada com um Mock
     mockApiClient = MockHttpApiClient(); // Cliente HTTP falso
     mockRepository = MotelRepository(apiClient: mockApiClient);
     mockUseCase = GetMotelsUseCase(mockRepository);
-    failureBloc = MotelBloc(getMotelsUseCase: mockUseCase);
+    failureBloc = MotelBloc(getMotelsUseCase: mockUseCase, filterBloc: filterBloc);
   });
 
   tearDown(() {
@@ -84,5 +87,6 @@ void main() {
         }
       },
     );
+
   });
 }
