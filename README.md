@@ -8,6 +8,8 @@ O **Guia Motéis** é um aplicativo desenvolvido em **Flutter** para facilitar a
 
 Os dados são obtidos a partir da API [JSONKeeper](https://www.jsonkeeper.com/b/1IXK), garantindo informações atualizadas e organizadas.
 
+**Para assistir o vídeo do app rodando, clique neste [link](https://youtube.com/shorts/SPtPzy5-xic?feature=share).**
+
 ---
 
 ## 📲 **Funcionalidades**
